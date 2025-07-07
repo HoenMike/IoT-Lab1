@@ -4,11 +4,11 @@ import paho.mqtt.client as mqtt
 app = Flask(__name__)
 
 # MQTT setup
-mqttBroker = "broker.shiftr.io"
-mqttUser = "your_username"  # Optional
-mqttPassword = "your_password"  # Optional
+mqttBroker = "mikedaiot.cloud.shiftr.io"
+mqttUser = "mikedaiot"  # Optional
+mqttPassword = "MHL9Od957yL7o9tP"  # Optional
 
-b_sensor_data = {
+sensor_data = {
     "humidity": 0,
     "light_level": 0
 }
@@ -30,7 +30,7 @@ mqttClient.loop_start()
 
 @app.route('/')
 def index():
-    return render_template('index.html', f_thanh_data=b_sensor_data)
+    return render_template('index.html', f_thanh_data=sensor_data)
 
 @app.route('/sensor_data')
 def get_sensor_data():
