@@ -5,24 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IoT Dashboard</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background: #f4f6fb;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 32px 24px 24px 24px;
+        }
+        h1 {
+            text-align: center;
+            color: #2d3a4b;
+            margin-bottom: 24px;
+        }
+        h2 {
+            color: #4a5a6a;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        .sensor-data {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+        }
+        .sensor-data p {
+            font-size: 1.1em;
+            margin: 8px 0;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .controls button {
+            background: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 18px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .controls button:hover {
+            background: #357ab8;
+        }
+    </style>
 </head>
 <body>
-    <h1>IoT Dashboard</h1>
-    <div>
-        <h2>Sensor Data</h2>
-        <p>Humidity: <span id="humidity">{{ f_thanh_data['humidity'] }}</span></p>
-        <p>Light Level: <span id="light_level">{{ f_thanh_data['light_level'] }}</span></p>
+    <div class="container">
+        <h1>IoT Dashboard</h1>
+        <div class="sensor-data">
+            <h2>Sensor Data</h2>
+            <p>Humidity: <span id="humidity">{{ f_thanh_data['humidity'] }}</span></p>
+            <p>Temperature: <span id="temperature">{{ f_thanh_data['temperature'] }}</span> &deg;C</p>
+            <p>Light Level: <span id="light_level">{{ f_thanh_data['light_level'] }}</span></p>
+        </div>
+        <h2>Control Devices</h2>
+        <div class="controls">
+            <button onclick="controlDevice('light1', 'on')">Turn On Light 1</button>
+            <button onclick="controlDevice('light1', 'off')">Turn Off Light 1</button>
+            <button onclick="controlDevice('fan1', 'on')">Turn On Fan 1</button>
+            <button onclick="controlDevice('fan1', 'off')">Turn Off Fan 1</button>
+        </div>
     </div>
-    <h2>Control Devices</h2>
-    <button onclick="controlDevice('light1', 'on')">Turn On Light 1</button>
-    <button onclick="controlDevice('light1', 'off')">Turn Off Light 1</button>
-    <button onclick="controlDevice('fan1', 'on')">Turn On Fan 1</button>
-    <button onclick="controlDevice('fan1', 'off')">Turn Off Fan 1</button>
-
     <script>
         function fetchSensorData() {
             $.getJSON('/sensor_data', function(data) {
                 $('#humidity').text(data.humidity.toFixed(2));
+                $('#temperature').text(data.temperature.toFixed(2));
                 $('#light_level').text(data.light_level);
             });
         }
@@ -34,6 +95,7 @@
         }
 
         setInterval(fetchSensorData, 5000); // Fetch data every 5 seconds
+        setInterval(function() { location.reload(); }, 30000); // Auto reload every 30 seconds
     </script>
 </body>
 </html>

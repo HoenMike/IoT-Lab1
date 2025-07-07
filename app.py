@@ -10,6 +10,7 @@ mqttPassword = "MHL9Od957yL7o9tP"  # Optional
 
 sensor_data = {
     "humidity": 0,
+    "temperature": 0,
     "light_level": 0
 }
 
@@ -19,7 +20,8 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     data = msg.payload.decode().split(',')
     sensor_data["humidity"] = float(data[0])
-    sensor_data["light_level"] = int(data[1])
+    sensor_data["temperature"] = float(data[1])
+    sensor_data["light_level"] = int(data[2])
 
 mqttClient = mqtt.Client()
 mqttClient.username_pw_set(mqttUser, mqttPassword)  # Optional

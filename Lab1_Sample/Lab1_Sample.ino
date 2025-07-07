@@ -103,7 +103,7 @@ void loop()
   float temperature = dht.readTemperature();
   int lightLevel = analogRead(A0);
 
-  String payload = String(humidity) + "," + String(lightLevel);
+  String payload = String(humidity) + "," + String(temperature) + "," + String(lightLevel);
   Serial.println(payload);
   client.publish("home/sensors", payload.c_str());
 
