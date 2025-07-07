@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>IoT Dashboard</h1>
+    <div>
+        <h2>Sensor Data</h2>
+        <p>Humidity: <span id="humidity">{{ f_thanh_data['humidity'] }}</span></p>
+        <p>Light Level: <span id="light_level">{{ f-thanh_data['light_level'] }}</span></p>
+    </div>
+    <h2>Control Devices</h2>
+    <button onclick="controlDevice('light1', 'on')">Turn On Light 1</button>
+    <button onclick="controlDevice('light1', 'off')">Turn Off Light 1</button>
+    <button onclick="controlDevice('fan1', 'on')">Turn On Fan 1</button>
+    <button onclick="controlDevice('fan1', 'off')">Turn Off Fan 1</button>
+
+    <script>
+        function fetchSensorData() {
+            $.getJSON('/sensor_data', function(data) {
+                $('#humidity').text(data.humidity.toFixed(2));
+                $('#light_level').text(data.light_level);
+            });
+        }
+
+        function controlDevice(device, action) {
+            $.get(`/control/${device}/${action}`, function(response) {
+                console.log(response);
+            });
+        }
+
+        setInterval(fetchSensorData, 5000); // Fetch data every 5 seconds
+    </script>
+</body>
+</html>
