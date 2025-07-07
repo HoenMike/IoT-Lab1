@@ -70,6 +70,12 @@
             <p>Humidity: <span id="humidity">{{ f_thanh_data['humidity'] }}</span></p>
             <p>Temperature: <span id="temperature">{{ f_thanh_data['temperature'] }}</span> &deg;C</p>
             <p>Light Level: <span id="light_level">{{ f_thanh_data['light_level'] }}</span></p>
+            <div style="margin-top:16px;">
+                <span id="light1-indicator" style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#ccc;vertical-align:middle;margin-right:8px;"></span>
+                <span id="light1-status-text">
+                    {% if light1_status == 'on' %}Light 1 is <b>ON</b>{% elif light1_status == 'off' %}Light 1 is <b>OFF</b>{% else %}Light 1 status: <b>Unknown</b>{% endif %}
+                </span>
+            </div>
         </div>
         <h2>Control Devices</h2>
         <div class="controls">
@@ -85,6 +91,20 @@
                 $('#humidity').text(data.humidity.toFixed(2));
                 $('#temperature').text(data.temperature.toFixed(2));
                 $('#light_level').text(data.light_level);
+                // Update light status feedback
+                let status = data.light1_status;
+                let indicator = $('#light1-indicator');
+                let statusText = $('#light1-status-text');
+                if (status === 'on') {
+                    indicator.css('background', '#4caf50');
+                    statusText.html('Light 1 is <b>ON</b>');
+                } else if (status === 'off') {
+                    indicator.css('background', '#888');
+                    statusText.html('Light 1 is <b>OFF</b>');
+                } else {
+                    indicator.css('background', '#ffc107');
+                    statusText.html('Light 1 status: <b>Unknown</b>');
+                }
             });
         }
 
@@ -94,8 +114,7 @@
             });
         }
 
-        setInterval(fetchSensorData, 5000); // Fetch data every 5 seconds
-        setInterval(function() { location.reload(); }, 30000); // Auto reload every 30 seconds
+        setInterval(fetchSensorData, 5); // Fetch data every 5 seconds
     </script>
 </body>
 </html>

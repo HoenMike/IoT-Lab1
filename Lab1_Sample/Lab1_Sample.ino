@@ -83,11 +83,13 @@ void handleCommand(String command)
   {
     digitalWrite(RELAY1, HIGH);
     Serial.println("Light 1 is ON");
+    client.publish("home/status", "light1_on");
   }
   else if (command == "light1_off")
   {
     digitalWrite(RELAY1, LOW);
     Serial.println("Light 1 is OFF");
+    client.publish("home/status", "light1_off");
   }
 }
 
